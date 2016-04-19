@@ -1,0 +1,44 @@
+{
+  "name": "md-table",
+  "description": "Material Design table component, for Riot.js",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": "https://github.com/lukeed/md-table",
+  "main": "md-table.js",
+  "files": [
+    "*.js",
+    "*.sass",
+    "*.scss",
+    "*.tag"
+  ],
+  "keywords": [
+    "riot",
+    "riotjs",
+    "riot-tag",
+    "md-table"
+  ],
+  "scripts": {
+    "test": "echo No tests specified.",
+    "build": "riot *.tag --ext tag --style scss",
+    "major": "npm version major && npm run push",
+    "minor": "npm version minor && npm run push",
+    "patch": "npm version patch && npm run push",
+    "push": "git push origin master --follow-tags && npm publish"
+  },
+  "author": {
+    "name": "Luke Edwards",
+    "email": "luke@lukeed.com",
+    "url": "https://lukeed.com"
+  },
+  "dependencies": {
+    "md-colors": "^1.0.0"
+  },
+  "devDependencies": {},
+  "peerDependencies": {
+    "riot": "2.x"
+  },
+  "engines": {
+    "iojs": ">= 1.0.0",
+    "node": ">= 0.12.0"
+  }
+}
