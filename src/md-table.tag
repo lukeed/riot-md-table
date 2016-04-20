@@ -127,11 +127,17 @@
 			// save the columns' datakeys & widths. will be used for `<td>` childs
 			self.tags['md-table-col'].forEach(function (c) {
 				var k = c.opts.key;
+
 				self.keys.push(k);
 				self.widths[k] = c.opts.width || 'auto';
+
+				// has a custom renderer?
 				if (c.opts.render) {
 					self.builders[k] = c.opts.render;
 				}
+
+				// remove the `<md-table-col>` tags from DOM, useless now
+				self.root.removeChild(c.root);
 			});
 
 			// check if there's an Actions column
