@@ -147,8 +147,8 @@
 		 * On `update`, draw the tablerows if has new data
 		 */
 		self.on('update', function () {
-			console.info('inside update');
-			if (opts.data.length > self.rows.length) {
+			console.warn('inside `md-table` update');
+			if (self.keys.length && opts.data.length > self.rows.length) {
 				self.drawRows();
 			}
 		});
