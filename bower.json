@@ -2,16 +2,18 @@
   "name": "riot-md-table",
   "version": "0.0.0",
   "description": "Material Design table component, for Riot.js",
-  "authors": [
-    {"name": "Luke Edwards", "email": "luke@lukeed.com", "homepage": "https://lukeed.com"}
-  ],
+  "authors": [{
+    "name": "Luke Edwards",
+    "email": "luke@lukeed.com",
+    "homepage": "https://lukeed.com"
+  }],
   "keywords": [
     "riot",
     "riotjs",
     "riot-tag",
     "md-table"
   ],
-  "main": "md-table.tag",
+  "main": "src/md-table.tag",
   "moduleType": [
     "amd"
   ],

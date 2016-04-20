@@ -4,12 +4,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "repository": "https://github.com/lukeed/riot-md-table",
-  "main": "md-table.js",
+  "main": "dist/md-table.js",
   "files": [
-    "*.js",
-    "*.sass",
-    "*.scss",
-    "*.tag"
+    "dist/*.js",
+    "src/*",
   ],
   "keywords": [
     "riot",
@@ -19,7 +17,7 @@
   ],
   "scripts": {
     "test": "echo No tests specified.",
-    "build": "riot *.tag --ext tag --style scss",
+    "build": "riot -w src dist --style scss --ext tag",
     "major": "npm version major && npm run push",
     "minor": "npm version minor && npm run push",
     "patch": "npm version patch && npm run push",
