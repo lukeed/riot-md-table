@@ -25,6 +25,7 @@
 		self.rows = []; // the `tbody tr` elements
 		self.keys = []; // the datakeys per column
 		self.widths = []; // the widths per column
+		self.builders = {}; // cols renderer funcs
 		self.selected = null; // selected row item
 
 		/**
@@ -42,7 +43,7 @@
 
 			self.rows = rows;
 
-			console.log('add rows to tbody', self.rows);
+			console.log('added to tbody!');
 		};
 
 		/**
@@ -67,7 +68,7 @@
 				td.width = self.widths[key];
 
 				// check if this cell should be mutated
-				var builder = mutateCell(key, data);
+				var builder = buildCell(key, data);
 
 				// table looks @ this & will use for sorter, if set
 				if (builder.isMutated) {
@@ -83,6 +84,19 @@
 			// send back the full `<tr>` row
 			return tr;
 		};
+
+		function buildCell(key, data) {
+			var val, isMutated = false;
+
+			if (self.builders[key]) {
+				val = builders[key](data);
+				isMutated = true;
+			} else {
+				val = data[key];
+			}
+
+			return {isMutated: isMutated, value: val};
+		}
 
 		/**
 		 * Assign a `click` handler to each row
@@ -113,9 +127,12 @@
 			for (var c of self.tags['md-table-col']) {
 				self.keys.push(c.opts.key);
 				self.widths.push(c.opts.width || 'auto');
+				if (c.opts.render) {
+					self.builders[c.opts.key] = c.opts.render;
+				}
 			}
 
-			console.log(self.keys, self.widths);
+			console.log(self.keys, self.widths, self.builders);
 
 			// check if there's an Actions column
 			if (opts.actions) {
