@@ -48,18 +48,25 @@
 		 * @return {Node}         The constructed row
 		 */
 		self.drawRow = function (data, idx) {
-			var id = opts.data[idx].id,
-				tr = doc.createElement('tr');
+			var tr = doc.createElement('tr');
+			tr.id = data.id || 'tr-' + idx;
 
+			// mock-up riot's e.item object (since no dom-loop)
 			tr.onclick = function (e) {
-				e.item = {id: id, tr: tr}
+				e.item = this;
 				self.onRowClick(e);
 			};
 
+			drawCells(tr, data);
+
+			// send back the full `<tr>` row
+			return tr;
+		};
+
+		function drawCells(tr, data) {
 			// loop thru keys
-			for (var i = 0; i < self.keys.length; i++) {
-				var key = self.keys[i],
-					td = doc.createElement('td');
+			self.keys.forEach(function (key) {
+				var td = doc.createElement('td');
 				td.width = self.widths[key];
 
 				// check if this cell should be mutated
@@ -74,11 +81,8 @@
 
 				// add this `<td>` to the `<tr>`
 				tr.appendChild(td);
-			}
-
-			// send back the full `<tr>` row
-			return tr;
-		};
+			});
+		}
 
 		function buildCell(key, data) {
 			var val, isMutated = false;
@@ -95,14 +99,14 @@
 
 		/**
 		 * Assign a `click` handler to each row
-		 * - Func is passed in via
+		 * - Func is passed in via `tr.onclick`
 		 */
 		self.onRowClick = function (e) {
 			if (self.selected) {
 				classie.remove(self.selected, _selected);
 			}
 
-			classie.add(e.item.tr, _selected);
+			classie.add(e.item, _selected);
 
 			if (rowClick) {
 				rowClick(e.item.id);
@@ -113,6 +117,8 @@
 			var th = e.target,
 				idx = th.cellIndex,
 				type = th.getAttribute('data-sort');
+
+			console.log('inside sortTable');
 		};
 
 		self.on('mount', function () {
@@ -126,8 +132,6 @@
 					self.builders[c.opts.key] = c.opts.render;
 				}
 			}
-
-			console.log(self.keys, self.widths, self.builders);
 
 			// check if there's an Actions column
 			if (opts.actions) {
