@@ -18,7 +18,7 @@ npm install riot-md-table
 ## Usage
 
 ```html
-<md-table data="{ data }" actions="4" onclick="{ onClick }">
+<md-table data="{ data }" search="true" actions="4" onclick="{ onClick }">
 	<md-table-col label="Col1" key="key1" order="desc" />
 	<md-table-col label="Col2" key="key2" />
 	<md-table-col label="Col3" key="key3" render="{ toDollars }" />
@@ -96,6 +96,20 @@ this.data = [
 		<td>Worker Bee</td>
 	</tr>
 </tbody>
+```
+
+#### search
+
+> Type: `String` <br>
+> Default: `null` <br>
+> Required: `false`
+
+If set (any string is truthy), displays a search `<input>` that can be used to search the table rows for values.
+
+Using `space` and `,` are synonymous with `OR`:
+
+```
+"aaa bbb" === "aaa,bbb" === "aaa, bbb" ===> Show any rows whose cells contain `aaa` OR `bbb`
 ```
 
 #### actions
