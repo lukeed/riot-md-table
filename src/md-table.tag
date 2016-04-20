@@ -25,7 +25,7 @@
 		self.rows = []; // the `tbody tr` elements
 		self.keys = []; // the datakeys per column
 		self.widths = {}; // the widths per column
-		self.builders = {}; // cols renderer funcs
+		self.builders = {}; // cols render methods
 		self.sorters = {}; // cols sorting methods
 		self.selected = null; // selected row item
 
