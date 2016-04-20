@@ -5,7 +5,7 @@
 		<thead>
 			<tr name="labels">
 				<th each="{ c in tags['md-table-col'] }" onclick="{ sortTable }"
-					data-key="{ c.opts.key }" data-order="{ c.opts.order || 'asc' }"
+					data-key="{ c.opts.key }" data-order="{ c.opts.order }" data-default-order="{ c.opts.default || 'asc' }"
 					style="width: { c.opts.width || 'auto' }">
 					{ c.opts.label } <i></i>
 				</th>
@@ -32,13 +32,14 @@
 		 * Draw all table rows within `opts.data`
 		 */
 		self.drawRows = function () {
-			console.info('inside drawRows');
+			console.time('first draw');
 			self.rows = [];
 			opts.data.forEach(function (row, i) {
 				var item = self.drawRow(row, i)
 				self.rows.push(item);
 				self.tbody.appendChild(item);
 			});
+			console.timeEnd('first draw');
 		};
 
 		/**
@@ -122,13 +123,82 @@
 			}
 		};
 
+		/**
+		 * Sort the Table rows by `<th>`s `data-key`
+		 * @param  {Event} e
+		 */
 		self.sortTable = function (e) {
 			var th = e.target,
-				idx = th.cellIndex,
-				type = th.getAttribute('data-sort');
+				key = th.getAttribute('data-key'),
+				order = th.getAttribute('data-order');
 
-			console.log('inside sortTable');
+			// no `data-key`? do nothing
+			if (!key) {
+				return;
+			}
+
+			// if there's already an `order`, do opposite, else default to `asc`
+			if (order) {
+				order = (order === 'asc') ? 'desc' : 'asc';
+			} else {
+				order = th.getAttribute('data-default-order');
+			}
+
+			console.log('new order: ', order);
+
+			// "asynchronously" sort the table; frees up main thread a bit
+			return setTimeout(function () {
+				handleSort(th, key, order);
+			}, 1);
 		};
+
+		// temp
+		function sorter(a, b) {
+			return a.localeCompare(b);
+		}
+
+		function handleSort(th, key, order) {
+			console.time('handleSort');
+			var idx = th.cellIndex;
+				// sorter = methods[key];
+
+			// Extract each row's `key` value && pair it with its `<tr>` as a tuple.
+      // This way sorting the values will incidentally sort the body rows.
+			var column = self.rows.map(function (tr, i) {
+				return [tr.children[idx].value, tr];
+			});
+
+			// Sort by the column's `key` value
+			column.sort(function (a, b) {
+				return sorter(a[0], b[0]);
+			});
+
+			// Reverse sorted array if not `asc`, which was assumed
+			if (order === 'desc') {
+				column.reverse();
+			}
+
+			// Replace `self.rows` with the sorted rows.
+			self.rows = column.map(function (tup) {
+				return tup[1]; // `<tr>` is 2nd item of tuple
+			});
+
+			// Write to `<tbody` without duplicating
+			console.time('re-append');
+			self.rows.forEach(function (el) {
+				self.tbody.appendChild(el);
+			});
+			console.timeEnd('re-append');
+
+			// Reset all `<th>`s except current
+			self.cols.forEach(function (el, i) {
+				if (i === self.actionsCol) {
+					return;
+				}
+				el.setAttribute('data-order', (el === th) ? order : null);
+			});
+			console.timeEnd('handleSort');
+		}
 
 		/**
 		 * On Init, Prepare & Collect `md-table-col` stats
