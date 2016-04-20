@@ -77,10 +77,8 @@
 				// check if this cell should be mutated
 				var builder = buildCell(key, data);
 
-				// table looks @ this & will use for sorter, if set
-				if (builder.isMutated) {
-					td.setAttribute('data-sort-value', data[key]);
-				}
+				// table looks @ this & will use for sorter
+				td.value = builder.isMutated ? data[key] : builder.value;
 
 				td.innerHTML = '<div class="td__inner">'+ builder.value +'</div>';
 
