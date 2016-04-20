@@ -1,7 +1,7 @@
 {
   "name": "riot-md-table",
   "description": "Material Design table component, for Riot.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "repository": "https://github.com/lukeed/riot-md-table",
   "main": "dist/md-table.js",

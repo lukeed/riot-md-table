@@ -1,6 +1,6 @@
 {
   "name": "riot-md-table",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Material Design table component, for Riot.js",
   "authors": [
     {
