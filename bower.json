@@ -23,12 +23,13 @@
     "**/.*",
     "node_modules",
     "bower_components",
+    "package.json",
     "test",
     "tests"
   ],
   "dependencies": {
-    "riot": "^2.3.0"
+    "riot": "^2.3.0",
+    "classie": "^1.0.1"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
