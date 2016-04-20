@@ -24,7 +24,7 @@
 		self.cols = []; // the `thead th` elements
 		self.rows = []; // the `tbody tr` elements
 		self.keys = []; // the datakeys per column
-		self.widths = []; // the widths per column
+		self.widths = {}; // the widths per column
 		self.builders = {}; // cols renderer funcs
 		self.selected = null; // selected row item
 
@@ -125,13 +125,14 @@
 			self.cols = [].slice.call(self.labels.children); // get `<th>` after loop runs
 
 			// save the columns' datakeys & widths. will be used for `<td>` childs
-			for (var c of self.tags['md-table-col']) {
-				self.keys.push(c.opts.key);
-				self.widths.push(c.opts.width || 'auto');
+			self.tags['md-table-col'].forEach(function (c) {
+				var k = c.opts.key;
+				self.keys.push(k);
+				self.widths[k] = c.opts.width || 'auto';
 				if (c.opts.render) {
-					self.builders[c.opts.key] = c.opts.render;
+					self.builders[k] = c.opts.render;
 				}
-			}
+			});
 
 			// check if there's an Actions column
 			if (opts.actions) {
