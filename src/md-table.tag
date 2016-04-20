@@ -2,9 +2,9 @@
 	<yield />
 
 	<table name="el" class="md-table">
-		<thead name="thead">
-			<tr>
-				<th each="{ c in cols }" onclick="{ sortTable }"
+		<thead>
+			<tr name="labels">
+				<th each="{ c in tags['md-table-col'] }" onclick="{ sortTable }"
 					data-sort="{ c.opts.sortby }" data-order="{ c.opts.order || 'asc' }"
 					style="width: { c.opts.width || 'auto' }">
 					{ c.opts.label } <i></i>
@@ -107,12 +107,10 @@
 		};
 
 		self.on('mount', function () {
-			// save `<th>` elements after `each` loop runs
-			self.cols = [].slice.call(self.thead.firstElementChild.children);
+			self.cols = [].slice.call(self.labels.children); // get `<th>` after loop runs
 
 			// save the columns' datakeys & widths. will be used for `<td>` childs
 			for (var c of self.tags['md-table-col']) {
-				console.log(c.opts);
 				self.keys.push(c.opts.key);
 				self.widths.push(c.opts.width || 'auto');
 			}
