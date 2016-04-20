@@ -5,8 +5,8 @@
 		<thead>
 			<tr name="labels">
 				<th each="{ c in tags['md-table-col'] }" onclick="{ sortTable }"
-					data-key="{ c.opts.key }" data-order="{ c.opts.order }" data-default-order="{ c.opts.default || 'asc' }"
-					style="width: { c.opts.width || 'auto' }">
+					data-order="{ c.opts.order || 'asc' }"
+					data-key="{ c.opts.key }" style="width: { c.opts.width || 'auto' }">
 					{ c.opts.label } <i></i>
 				</th>
 			</tr>
@@ -80,7 +80,6 @@
 
 				// table looks @ this & will use for sorter
 				td.value = builder.isMutated ? data[key] : builder.value;
-
 				td.innerHTML = '<div class="td__inner">'+ builder.value +'</div>';
 
 				// add this `<td>` to the `<tr>`
@@ -131,20 +130,15 @@
 		self.sortTable = function (e) {
 			var th = e.target,
 				key = th.getAttribute('data-key'),
-				order = th.getAttribute('data-order');
+				sorted = th.getAttribute('data-sort');
 
 			// no `data-key`? do nothing
 			if (!key) {
 				return;
 			}
 
-			// if there's already an `order`, do opposite, else default to `asc`
-			if (order) {
-				order = (order === 'asc') ? 'desc' : 'asc';
-			} else {
-				order = th.getAttribute('data-default-order');
-			}
-
+			// if there's already a `sorted`, do opposite, else default to `asc`
+			var order = sorted ? ((sorted === 'asc') ? 'desc' : 'asc') : th.getAttribute('data-order');
 			console.log('new order: ', order);
 
 			// "asynchronously" sort the table; frees up main thread a bit
@@ -202,7 +196,11 @@
 				if (i === self.actionsCol) {
 					return;
 				}
-				el.setAttribute('data-order', (el === th) ? order : null);
+				if (el === th) {
+					el.setAttribute('data-sort', order);
+				} else {
+					el.removeAttribute('data-sort');
+				}
 			});
 			console.timeEnd('handleSort');
 		}
