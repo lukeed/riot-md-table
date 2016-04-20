@@ -2,11 +2,13 @@
   "name": "riot-md-table",
   "version": "0.0.1",
   "description": "Material Design table component, for Riot.js",
-  "authors": [{
-    "name": "Luke Edwards",
-    "email": "luke@lukeed.com",
-    "homepage": "https://lukeed.com"
-  }],
+  "authors": [
+    {
+      "name": "Luke Edwards",
+      "email": "luke@lukeed.com",
+      "homepage": "https://lukeed.com"
+    }
+  ],
   "keywords": [
     "riot",
     "riotjs",
@@ -29,7 +31,8 @@
   ],
   "dependencies": {
     "riot": "^2.3.0",
-    "classie": "^1.0.1"
+    "classie": "^1.0.1",
+    "javascipt-debounce": "javascript-debounce#^1.0.0"
   },
   "devDependencies": {}
 }
