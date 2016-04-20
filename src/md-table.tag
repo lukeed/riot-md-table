@@ -1,6 +1,9 @@
 <md-table>
 	<yield />
 
+	<input if="{ opts.search }"
+		type="text" onkeyup="{ onKeyup }">
+
 	<table name="el" class="md-table">
 		<thead>
 			<tr name="labels">
@@ -122,6 +125,23 @@
 			if (rowClick) {
 				rowClick(e.item);
 			}
+		};
+
+		self.onKeyup = debounce(function (e) {
+			self.searchTable(e.target.value);
+		}, 250);
+
+		/**
+		 * Use the Search's value to hide non-matching rows
+		 * @param  {String} val   The search input's value
+		 */
+		self.searchTable = function (val) {
+			console.log('inside');
+			var rgx = new RegExp(val, 'i');
+			// test each cell by what's displaying (not always original value)
+			[].forEach.call(self.tbody.getElementsByTagName('td'), function (td) {
+				td.parentNode.style.display = rgx.test(td.innerText) ? 'table-row' : 'none';
+			});
 		};
 
 		/**

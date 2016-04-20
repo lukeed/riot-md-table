@@ -1,4 +1,4 @@
-riot.tag2('md-table', '<yield></yield> <table name="el" class="md-table"> <thead> <tr name="labels"> <th each="{c in tags[\'md-table-col\']}" onclick="{sortTable}" data-order="{c.opts.order || \'asc\'}" data-key="{c.opts.key}" riot-style="width: {c.opts.width || \'auto\'}"> {c.opts.label} <i></i> </th> </tr> </thead> <tbody name="tbody"></tbody> </table>', ':scope p { color: #2196f3; }', '', function(opts) {
+riot.tag2('md-table', '<yield></yield> <input if="{opts.search}" type="text" onkeyup="{onKeyup}"> <table name="el" class="md-table"> <thead> <tr name="labels"> <th each="{c in tags[\'md-table-col\']}" onclick="{sortTable}" data-order="{c.opts.order || \'asc\'}" data-key="{c.opts.key}" riot-style="width: {c.opts.width || \'auto\'}"> {c.opts.label} <i></i> </th> </tr> </thead> <tbody name="tbody"></tbody> </table>', ':scope p { color: #2196f3; }', '', function(opts) {
 		var self = this,
 			doc = document,
 			rowClick = opts.onclick,
@@ -76,6 +76,19 @@ riot.tag2('md-table', '<yield></yield> <table name="el" class="md-table"> <thead
 			if (rowClick) {
 				rowClick(e.item);
 			}
+		};
+
+		self.onKeyup = debounce(function (e) {
+			self.searchTable(e.target.value);
+		}, 250);
+
+		self.searchTable = function (val) {
+			console.log('inside');
+			var rgx = new RegExp(val, 'i');
+
+			[].forEach.call(self.tbody.getElementsByTagName('td'), function (td) {
+				td.parentNode.style.display = rgx.test(td.innerText) ? 'table-row' : 'none';
+			});
 		};
 
 		self.sortTable = function (e) {
