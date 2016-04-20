@@ -33,17 +33,12 @@
 		 */
 		self.drawRows = function () {
 			console.info('inside drawRows');
-			var rows = [];
-
+			self.rows = [];
 			opts.data.forEach(function (row, i) {
 				var item = self.drawRow(row, i)
-				rows.push(item);
-				// self.tbody.appendChild(item);
+				self.rows.push(item);
+				self.tbody.appendChild(item);
 			});
-
-			self.rows = rows;
-
-			console.log('added to tbody!');
 		};
 
 		/**
