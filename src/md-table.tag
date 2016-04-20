@@ -136,8 +136,8 @@
 		 * @param  {String} val   The search input's value
 		 */
 		self.searchTable = function (val) {
-			console.log('inside');
-			var rgx = new RegExp(val, 'i');
+			// split by spaces or commas, read as "OR"
+			var rgx = new RegExp(val.trim().replace(/[ ,]+/g, '|'), 'i');
 			// test each cell by what's displaying (not always original value)
 			[].forEach.call(self.tbody.getElementsByTagName('td'), function (td) {
 				td.parentNode.style.display = rgx.test(td.innerText) ? 'table-row' : 'none';

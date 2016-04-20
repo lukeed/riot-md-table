@@ -83,8 +83,8 @@ riot.tag2('md-table', '<yield></yield> <input if="{opts.search}" type="text" onk
 		}, 250);
 
 		self.searchTable = function (val) {
-			console.log('inside');
-			var rgx = new RegExp(val, 'i');
+
+			var rgx = new RegExp(val.trim().replace(/[ ,]+/g, '|'), 'i');
 
 			[].forEach.call(self.tbody.getElementsByTagName('td'), function (td) {
 				td.parentNode.style.display = rgx.test(td.innerText) ? 'table-row' : 'none';
