@@ -63,6 +63,11 @@
 			return tr;
 		};
 
+		/**
+		 * Build & Attach `<td>` nodes to a `<tr>`
+		 * @param  {Node}   tr
+		 * @param  {Object} data   The row's data object
+		 */
 		function drawCells(tr, data) {
 			// loop thru keys
 			self.keys.forEach(function (key) {
@@ -84,6 +89,12 @@
 			});
 		}
 
+		/**
+		 * Determine a single cell's value
+		 * @param  {String} key  The cell col's key name
+		 * @param  {Object} data The row's data object
+		 * @return {Object}      The cell's computed values
+		 */
 		function buildCell(key, data) {
 			var val, isMutated = false;
 
@@ -121,6 +132,9 @@
 			console.log('inside sortTable');
 		};
 
+		/**
+		 * On Init, Prepare & Collect `md-table-col` stats
+		 */
 		self.on('mount', function () {
 			self.cols = [].slice.call(self.labels.children); // get `<th>` after loop runs
 
