@@ -117,9 +117,10 @@
 			}
 
 			classie.add(e.item, _selected);
+			self.selected = e.item;
 
 			if (rowClick) {
-				rowClick(e.item.id);
+				rowClick(e.item);
 			}
 		};
 
