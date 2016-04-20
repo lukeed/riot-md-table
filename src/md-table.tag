@@ -5,7 +5,7 @@
 		<thead>
 			<tr name="labels">
 				<th each="{ c in tags['md-table-col'] }" onclick="{ sortTable }"
-					data-sort="{ c.opts.sortby }" data-order="{ c.opts.order || 'asc' }"
+					data-key="{ c.opts.key }" data-order="{ c.opts.order || 'asc' }"
 					style="width: { c.opts.width || 'auto' }">
 					{ c.opts.label } <i></i>
 				</th>
