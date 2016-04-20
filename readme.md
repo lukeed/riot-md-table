@@ -62,7 +62,7 @@ Each `data` Object should be the `key:value` pairs for a single row. These `key`
 
 An optional `id` key may be used to set the `id` attribute of the `<tr>` element.
 
-##### data[<Object.id>]
+##### data[ Object.id ]
 
 > Type: `Mixed` <br>
 > Default: `tr-{ index }` <br>
@@ -73,7 +73,7 @@ If not set, the data object's index (within all of `data`) becomes the row's id:
 ```js
 this.data = [
 	{name: 'John', age: 32, job: 'Worker Bee'},
-	{id: "queen", name: 'Sally', age: 26, job: 'Queen Bee'}
+	{id: 'queen', name: 'Sally', age: 26, job: 'Queen Bee'}
 	{name: 'Jack', age: 19, job: 'Worker Bee'},
 ];
 ```
@@ -116,7 +116,6 @@ Event handler for every `<td>` or `<tr>` within `<tbody>`. The event's `event.it
 
 ### For `md-table-col`
 
-label="Col1" key="key1" order="desc"
 #### label
 
 > Type: `String` <br>
