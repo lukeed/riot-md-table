@@ -158,6 +158,12 @@
 			return a.localeCompare(b);
 		}
 
+		/**
+		 * Perform the sorting function
+		 * @param  {Node} th    The clicked `<th>` element
+		 * @param  {String} key   The `th`s `data-key` value
+		 * @param  {String} order The sorting direction, 'asc|desc'
+		 */
 		function handleSort(th, key, order) {
 			console.time('handleSort');
 			var idx = th.cellIndex;

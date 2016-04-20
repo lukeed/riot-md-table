@@ -7,7 +7,7 @@
   "main": "dist/md-table.js",
   "files": [
     "dist/*.js",
-    "src/*",
+    "src/*"
   ],
   "keywords": [
     "riot",
