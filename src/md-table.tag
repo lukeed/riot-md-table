@@ -26,6 +26,7 @@
 		self.keys = []; // the datakeys per column
 		self.widths = {}; // the widths per column
 		self.builders = {}; // cols renderer funcs
+		self.sorters = {}; // cols sorting methods
 		self.selected = null; // selected row item
 
 		/**
@@ -97,7 +98,7 @@
 			var val, isMutated = false;
 
 			if (self.builders[key]) {
-				val = builders[key](data);
+				val = self.builders[key](data);
 				isMutated = true;
 			} else {
 				val = data[key];
@@ -130,41 +131,36 @@
 		self.sortTable = function (e) {
 			var th = e.target,
 				key = th.getAttribute('data-key'),
-				sorted = th.getAttribute('data-sort');
+				sorter = self.sorters[key];
 
-			// no `data-key`? do nothing
-			if (!key) {
+			// no `data-key` or sorter method? do nothing
+			if (!key || !sorter) {
 				return;
 			}
 
-			// if there's already a `sorted`, do opposite, else default to `asc`
-			var order = sorted ? ((sorted === 'asc') ? 'desc' : 'asc') : th.getAttribute('data-order');
+			var sorted = th.getAttribute('data-sort'),
+				// if there's already a `sorted`, do opposite, else default to `asc`
+				order = sorted ? ((sorted === 'asc') ? 'desc' : 'asc') : th.getAttribute('data-order');
 			console.log('new order: ', order);
 
 			// "asynchronously" sort the table; frees up main thread a bit
 			return setTimeout(function () {
-				handleSort(th, key, order);
+				handleSort(th, order, sorter);
 			}, 1);
 		};
 
-		// temp
-		function sorter(a, b) {
-			return a.localeCompare(b);
-		}
-
 		/**
 		 * Perform the sorting function
-		 * @param  {Node} th    The clicked `<th>` element
-		 * @param  {String} key   The `th`s `data-key` value
-		 * @param  {String} order The sorting direction, 'asc|desc'
+		 * @param  {Node} th           The clicked `<th>` element
+		 * @param  {String} order      The sorting direction, 'asc|desc'
+		 * @param  {Function} sorter   The column's sorting function
 		 */
-		function handleSort(th, key, order) {
+		function handleSort(th, order, sorter) {
 			console.time('handleSort');
 			var idx = th.cellIndex;
-				// sorter = methods[key];
 
 			// Extract each row's `key` value && pair it with its `<tr>` as a tuple.
-      // This way sorting the values will incidentally sort the body rows.
+			// This way sorting the values will incidentally sort the body rows.
 			var column = self.rows.map(function (tr, i) {
 				return [tr.children[idx].value, tr];
 			});
@@ -219,9 +215,9 @@
 				self.widths[k] = c.opts.width || 'auto';
 
 				// has a custom renderer?
-				if (c.opts.render) {
-					self.builders[k] = c.opts.render;
-				}
+				self.builders[k] = c.opts.render || false;
+				// has a sorter method?
+				self.sorters[k] = c.opts.sorter || false;
 
 				// remove the `<md-table-col>` tags from DOM, useless now
 				self.root.removeChild(c.root);
